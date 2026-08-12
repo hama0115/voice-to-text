@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>音声認識テスト</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding: 50px;
+      }
+      button {
+        font-size: 20px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+      #result {
+        font-size: 32px;
+        margin-top: 30px;
+        background: #f0f0f0;
+        padding: 20px;
+        min-height: 100px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>おじい様用 筆談アプリ（テスト）</h1>
+    <button id="toggle-btn">マイクをONにする</button>
+    <div id="result">ここに話した言葉が出ます...</div>
+
+    <script>
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+        alert(
+          "このブラウザはWeb Speech APIに対応していません。Google Chrome等を使ってください。",
+        );
+      } else {
+        const recognition = new SpeechRecognition();
+        recognition.lang = "ja-JP";
+        recognition.interimResults = true; // リアルタイムで文字にする
+        recognition.continuous = true; // 自動で終了させない
+
+        const btn = document.getElementById("toggle-btn");
+        const resultDiv = document.getElementById("result");
+        let isListening = false;
+
+        // 音声認識結果を受け取ったとき
+        recognition.onresult = (event) => {
+          let transcript = "";
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript;
+          }
+          resultDiv.innerText = transcript;
+        };
+
+        // 止まってしまったときの自動再開
+        recognition.onend = () => {
+          if (isListening) {
+            recognition.start();
+          }
+        };
+
+        // ボタンクリックでON/OFF切り替え
+        btn.addEventListener("click", () => {
+          if (isListening) {
+            recognition.stop();
+            isListening = false;
+            btn.innerText = "マイクをONにする";
+            btn.style.background = "";
+          } else {
+            recognition.start();
+            isListening = true;
+            btn.innerText = "マイクをOFFにする（聞き取り中）";
+            btn.style.background = "#ffcccc";
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
