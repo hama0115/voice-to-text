@@ -12,6 +12,7 @@ if (!SpeechRecognition) {
   recognition.continuous = true; // 自動で終了させない
 
   const btn = document.getElementById("toggle-btn");
+  const micStatus = document.getElementById("mic-status");
   const resultDiv = document.getElementById("result");
   let isListening = false;
 
@@ -36,12 +37,12 @@ if (!SpeechRecognition) {
     if (isListening) {
       recognition.stop();
       isListening = false;
-      btn.textContent = "マイクをONにする";
+      micStatus.textContent = "マイクがOFFになっています";
       btn.classList.remove("is-listening");
     } else {
       recognition.start();
       isListening = true;
-      btn.textContent = "マイクをOFFにする（聞き取り中）";
+      micStatus.textContent = "マイクがONになっています";
       btn.classList.add("is-listening");
     }
   });
