@@ -10,13 +10,17 @@ body {
   margin: 0 0 12px;
 }
 
+#mic-status.is-listening {
+  color: red;
+}
+
 button {
   font-size: 20px;
   padding: 10px 20px;
   cursor: pointer;
 }
 
-/* ON状態のスタイル */
+/* ON状態のボタンのスタイル */
 button.is-listening {
   background: #ffcccc;
 }

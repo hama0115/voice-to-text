@@ -38,11 +38,13 @@ if (!SpeechRecognition) {
       recognition.stop();
       isListening = false;
       micStatus.textContent = "マイクがOFFになっています";
+      micStatus.classList.remove("is-listening");
       btn.classList.remove("is-listening");
     } else {
       recognition.start();
       isListening = true;
       micStatus.textContent = "マイクがONになっています";
+      micStatus.classList.add("is-listening");
       btn.classList.add("is-listening");
     }
   });
