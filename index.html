@@ -13,8 +13,13 @@
   </head>
   <body>
     <h1>じいちゃん用 筆談アプリ（テスト）</h1>
-    <button id="toggle-btn" type="button">マイクをONにする</button>
-    <div id="result">ここに話した言葉が出ます...</div>
+    <p id="mic-status" aria-live="polite">
+      マイクがOFFになっています。下のボタンを押してONにしてください。
+    </p>
+    <button id="toggle-btn" type="button">ON/OFF 切り替えボタン</button>
+    <div id="result">
+      (「マイクがONになっています」という表示を確認し、話しかけてください。)
+    </div>
 
     <script src="app.js" defer></script>
   </body>

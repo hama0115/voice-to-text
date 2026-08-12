@@ -4,16 +4,28 @@ body {
   padding: 50px;
 }
 
+/* マイクのONOFF状態を伝えるメッセージ */
+#mic-status {
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+
+#mic-status.is-listening {
+  color: red;
+}
+
 button {
   font-size: 20px;
   padding: 10px 20px;
   cursor: pointer;
 }
 
+/* ON状態のボタンのスタイル */
 button.is-listening {
   background: #ffcccc;
 }
 
+/* 話した文言の表示 */
 #result {
   font-size: 32px;
   margin-top: 30px;
