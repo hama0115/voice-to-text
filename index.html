@@ -12,14 +12,11 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>じいちゃん用 筆談アプリ（テスト）</h1>
-    <p id="mic-status" aria-live="polite">
-      マイクがOFFになっています。下のボタンを押してONにしてください。
-    </p>
-    <button id="toggle-btn" type="button">ON/OFF 切り替えボタン</button>
-    <div id="result">
-      (「マイクがONになっています」という表示を確認し、話しかけてください。)
+    <div id="controls">
+      <p id="mic-status">下のボタンを押してマイクをONにしてください。</p>
+      <button id="start-btn" type="button">マイクをONにする</button>
     </div>
+    <div id="result">話しかけた内容がここに表示されます。</div>
 
     <script src="app.js" defer></script>
   </body>
