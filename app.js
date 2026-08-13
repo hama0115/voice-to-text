@@ -11,8 +11,7 @@ if (!SpeechRecognition) {
   recognition.interimResults = true; // リアルタイムで文字にする
   recognition.continuous = true; // 自動で終了させない
 
-  const btn = document.getElementById("toggle-btn");
-  const micStatus = document.getElementById("mic-status");
+  const startBtn = document.getElementById("start-btn");
   const resultDiv = document.getElementById("result");
   let isListening = false;
 
@@ -32,20 +31,11 @@ if (!SpeechRecognition) {
     }
   };
 
-  // ボタンクリックでON/OFF切り替え
-  btn.addEventListener("click", () => {
-    if (isListening) {
-      recognition.stop();
-      isListening = false;
-      micStatus.textContent = "マイクがOFFになっています";
-      micStatus.classList.remove("is-listening");
-      btn.classList.remove("is-listening");
-    } else {
-      recognition.start();
-      isListening = true;
-      micStatus.textContent = "マイクがONになっています";
-      micStatus.classList.add("is-listening");
-      btn.classList.add("is-listening");
-    }
+  // ボタンクリックでマイクをON（このあと止めない）
+  startBtn.addEventListener("click", () => {
+    recognition.start();
+    isListening = true;
+    document.body.classList.add("is-listening");
+    resultDiv.textContent = "聞いています。話しかけてください。";
   });
 }
