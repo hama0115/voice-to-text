@@ -36,6 +36,7 @@ if (!SpeechRecognition) {
     recognition.start();
     isListening = true;
     document.body.classList.add("is-listening");
-    resultDiv.textContent = "聞いています。話しかけてください。";
+    resultDiv.textContent =
+      "聞いています。おじいちゃんに伝えたいことをこの画面に向かって話しかけてください。";
   });
 }
