@@ -57,6 +57,10 @@ if (!SpeechRecognition) {
     if (!trimmed) {
       return;
     }
+    const last = finalized[finalized.length - 1];
+    if (last && last.text === trimmed) {
+      return;
+    }
     finalized.push({ text: trimmed, createdAt: Date.now() });
     render();
     setTimeout(render, DISPLAY_MS);
