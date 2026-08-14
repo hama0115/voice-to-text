@@ -15,7 +15,7 @@ if (!SpeechRecognition) {
   const DISPLAY_MS = 15000;
 
   const LISTENING_MESSAGE =
-    "聞いています。おじいちゃんに伝えたいことをこの画面に向かって話しかけてください。";
+    "(聞いています。おじいちゃんに伝えたいことをこの画面に向かって話しかけてください。)";
 
   const startBtn = document.getElementById("start-btn");
   const resultDiv = document.getElementById("result");

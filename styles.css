@@ -1,11 +1,11 @@
 body {
   font-family: sans-serif;
-  text-align: center;
   padding: 50px;
 }
 
 #controls {
   margin-bottom: 30px;
+  text-align: center;
 }
 
 body.is-listening #controls {
