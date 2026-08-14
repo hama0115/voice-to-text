@@ -30,3 +30,22 @@ button {
   min-height: 100px;
   border-radius: 8px;
 }
+
+.utterance {
+  margin: 0 0 16px;
+  font-size: 28px;
+  color: #444;
+}
+
+.utterance:last-child {
+  margin-bottom: 0;
+}
+
+.utterance.is-latest {
+  font-size: 40px;
+  color: #111;
+}
+
+.utterance.is-interim {
+  color: #555;
+}

@@ -11,17 +11,69 @@ if (!SpeechRecognition) {
   recognition.interimResults = true; // リアルタイムで文字にする
   recognition.continuous = true; // 自動で終了させない
 
+  const DISPLAY_MS = 8000;
+  const LISTENING_MESSAGE =
+    "聞いています。おじいちゃんに伝えたいことをこの画面に向かって話しかけてください。";
+
   const startBtn = document.getElementById("start-btn");
   const resultDiv = document.getElementById("result");
   let isListening = false;
+  let finalized = [];
+  let interim = "";
+
+  function render() {
+    const now = Date.now();
+    finalized = finalized.filter((line) => now - line.createdAt < DISPLAY_MS);
+
+    resultDiv.replaceChildren();
+
+    if (finalized.length === 0 && !interim) {
+      resultDiv.textContent = LISTENING_MESSAGE;
+      return;
+    }
+
+    finalized.forEach((line, index) => {
+      const p = document.createElement("p");
+      p.className = "utterance";
+      if (index === finalized.length - 1 && !interim) {
+        p.classList.add("is-latest");
+      }
+      p.textContent = line.text;
+      resultDiv.appendChild(p);
+    });
+
+    if (interim) {
+      const p = document.createElement("p");
+      p.className = "utterance is-latest is-interim";
+      p.textContent = interim;
+      resultDiv.appendChild(p);
+    }
+  }
+
+  function pushLine(text) {
+    const trimmed = text.trim();
+    if (!trimmed) {
+      return;
+    }
+    finalized.push({ text: trimmed, createdAt: Date.now() });
+    render();
+    setTimeout(render, DISPLAY_MS);
+  }
 
   // 音声認識結果を受け取ったとき
   recognition.onresult = (event) => {
-    let transcript = "";
+    interim = "";
+
     for (let i = event.resultIndex; i < event.results.length; i++) {
-      transcript += event.results[i][0].transcript;
+      const text = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        pushLine(text);
+      } else {
+        interim += text;
+      }
     }
-    resultDiv.textContent = transcript;
+
+    render();
   };
 
   // 止まってしまったときの自動再開
@@ -36,7 +88,6 @@ if (!SpeechRecognition) {
     recognition.start();
     isListening = true;
     document.body.classList.add("is-listening");
-    resultDiv.textContent =
-      "聞いています。おじいちゃんに伝えたいことをこの画面に向かって話しかけてください。";
+    render();
   });
 }
