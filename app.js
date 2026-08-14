@@ -11,7 +11,9 @@ if (!SpeechRecognition) {
   recognition.interimResults = true; // リアルタイムで文字にする
   recognition.continuous = true; // 自動で終了させない
 
-  const DISPLAY_MS = 8000;
+  // 発話が残る秒数をここで調整
+  const DISPLAY_MS = 15000;
+
   const LISTENING_MESSAGE =
     "聞いています。おじいちゃんに伝えたいことをこの画面に向かって話しかけてください。";
 
