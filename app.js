@@ -13,6 +13,8 @@ if (!SpeechRecognition) {
 
   // 発話が残る秒数をここで調整
   const DISPLAY_MS = 15000;
+  // この時間以内の確定結果は、同じ発話の修正版としてまとめる
+  const MERGE_MS = 4000;
 
   const LISTENING_MESSAGE =
     "(聞いています。おじいちゃんに伝えたいことをこの画面に向かって話しかけてください。)";
@@ -22,6 +24,10 @@ if (!SpeechRecognition) {
   let isListening = false;
   let finalized = [];
   let interim = "";
+
+  function normalize(text) {
+    return text.trim().replace(/\s+/g, " ");
+  }
 
   function render() {
     const now = Date.now();
@@ -53,15 +59,35 @@ if (!SpeechRecognition) {
   }
 
   function pushLine(text) {
-    const trimmed = text.trim();
+    const trimmed = normalize(text);
     if (!trimmed) {
       return;
     }
+
+    const now = Date.now();
     const last = finalized[finalized.length - 1];
+
     if (last && last.text === trimmed) {
       return;
     }
-    finalized.push({ text: trimmed, createdAt: Date.now() });
+
+    // 同じ発話の段階的な確定結果（短い版→長い版）を1行にまとめる
+    if (last && now - last.createdAt < MERGE_MS) {
+      if (trimmed.startsWith(last.text)) {
+        last.text = trimmed;
+        last.createdAt = now;
+        render();
+        setTimeout(render, DISPLAY_MS);
+        return;
+      }
+      if (last.text.startsWith(trimmed)) {
+        render();
+        setTimeout(render, DISPLAY_MS);
+        return;
+      }
+    }
+
+    finalized.push({ text: trimmed, createdAt: now });
     render();
     setTimeout(render, DISPLAY_MS);
   }
